@@ -85,4 +85,6 @@ function updateTimer() {
   progressBar.style.width = `${progress}%`;
 }
 
-startTimer();
+window.onload = function() {
+  setTimeout(startTimer, 1000); // Wait for 1 second before starting the timer
+};
