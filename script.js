@@ -3,12 +3,46 @@ function getQueryParams() {
   const totalTimeMin = parseFloat(params.get('time')) || 25; // Default to 25 minutes if not provided
   const startSoundNum = parseInt(params.get('startSound')) || 0;
   const endSoundNum = parseInt(params.get('endSound')) || 0;
+  const loopEndSound = parseInt(params.get('loopEndSound')) || 0;
   const hideProgressBar = parseInt(params.get('hideProgressBar')) || 0;
   const hideTimer = parseInt(params.get('hideTimer')) || 0;
-  return { totalTimeMin, startSoundNum, endSoundNum, hideProgressBar, hideTimer };
+
+  // Validate user input
+  const colorParam = params.get('color') || '';
+  const bgColorParam = params.get('bgColor') || '';
+  // Use the validated color or a default value
+  const color = isValidColor(colorParam) ? `${colorParam}` : '';
+  const bgColor = isValidColor(bgColorParam) ? `${bgColorParam}` : '';
+
+  return {
+    totalTimeMin,
+    startSoundNum,
+    endSoundNum,
+    loopEndSound,
+    hideProgressBar,
+    hideTimer,
+    color,
+    bgColor
+  };
 }
 
-const { totalTimeMin, startSoundNum, endSoundNum, hideProgressBar, hideTimer } = getQueryParams();
+function isValidColor(colorParam) {
+  // Validate the color parameter using a regular expression
+  // Allow 3, 6, or 8 character hex codes
+  return /^([0-9A-F]{3}){1,2}([0-9A-F]{2})?$/i.test(colorParam);
+}
+
+const {
+  totalTimeMin,
+  startSoundNum,
+  endSoundNum,
+  loopEndSound,
+  hideProgressBar,
+  hideTimer,
+  color,
+  bgColor
+} = getQueryParams();
+
 let totalTime = totalTimeMin * 60;
 let endTime;
 let timerInterval;
@@ -24,6 +58,20 @@ if (hideProgressBar) {
 
 if (hideTimer) {
   timerDisplay.style.display = 'none';
+}
+
+if (color.length > 0) {
+  document.documentElement.style.setProperty('--timer-color', `#${color}`);
+} else {
+  // Use default color
+  document.documentElement.style.setProperty('--timer-color', `#fff`);
+}
+
+if (bgColor.length > 0) {
+  document.documentElement.style.setProperty('--bg-color', `#${bgColor}`);
+} else {
+  // Use default color
+  document.documentElement.style.setProperty('--bg-color', `#00000000`);
 }
 
 function getSoundPath(soundNum) {
@@ -66,6 +114,11 @@ function stopTimer() {
     endSound.currentTime = 0; // Ensure the sound to play from the start
     endSound.play();
   }
+
+  if (loopEndSound) {
+    // Keep repeating endSound until the scene is changed in OBS
+    endSound.loop = true;
+  }
 }
 
 function updateTimer() {
@@ -85,6 +138,14 @@ function updateTimer() {
   progressBar.style.width = `${progress}%`;
 }
 
-window.onload = function() {
+window.onload = function () {
   setTimeout(startTimer, 1000); // Wait for 1 second before starting the timer
 };
+
+// When the scene is changed in OBS, stop the sounds.
+// This is to prevent the sounds from playing when switching back to the previous scene.
+window.addEventListener('obsSceneChanged', function(event) {
+  console.log('obsSceneChanged:', event);
+  endSound.pause();
+  endSound.currentTime = 0;
+})

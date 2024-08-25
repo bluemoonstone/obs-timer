@@ -1,3 +1,9 @@
+:root {
+  /* Start with a transparent color to prevent the default color from appearing on load */
+  --timer-color: rgb(0, 0, 0, 0);
+  --bg-color: rgb(0, 0, 0, 0);
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -5,12 +11,13 @@ body {
   justify-content: center;
   height: 100vh;
   font-family: Arial, sans-serif;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--bg-color);
+  color: var(--timer-color);
+  overflow: hidden;
 }
 
 #timer {
-  font-size: 10rem;
+  font-size: 100px;
   margin-bottom: 20px;
   font-family: 'Roboto Black', monospace;
 }
@@ -18,14 +25,14 @@ body {
 #progress-container {
   width: 80%;
   height: 30px;
-  background-color:  ;
-  border: 4px solid #fff;
+  min-width: 250px;
+  border: 4px solid var(--timer-color);
   overflow: hidden;
 }
 
 #progress-bar {
   height: 100%;
   width: 0;
-  background-color: #fff;
+  background-color: var(--timer-color);
   /* transition: width 1s linear; */
 }
