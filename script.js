@@ -4,8 +4,9 @@ function getQueryParams() {
   const startSoundNum = parseInt(params.get('startSound')) || 0;
   const endSoundNum = parseInt(params.get('endSound')) || 0;
   const loopEndSound = parseInt(params.get('loopEndSound')) || 0;
-  const hideProgressBar = parseInt(params.get('hideProgressBar')) || 0;
+  const hideProgBar = parseInt(params.get('hideProgBar')) || 0;
   const hideTimer = parseInt(params.get('hideTimer')) || 0;
+  const countUpProgBar = parseInt(params.get('countUpProgBar')) || 0;
 
   // Validate user input
   const colorParam = params.get('color') || '';
@@ -19,8 +20,9 @@ function getQueryParams() {
     startSoundNum,
     endSoundNum,
     loopEndSound,
-    hideProgressBar,
+    hideProgBar,
     hideTimer,
+    countUpProgBar,
     color,
     bgColor
   };
@@ -37,8 +39,9 @@ const {
   startSoundNum,
   endSoundNum,
   loopEndSound,
-  hideProgressBar,
+  hideProgBar,
   hideTimer,
+  countUpProgBar,
   color,
   bgColor
 } = getQueryParams();
@@ -51,7 +54,7 @@ const timerDisplay = document.getElementById('timer');
 const progressBar = document.getElementById('progress-bar');
 const progressContainer = document.getElementById('progress-container');
 
-if (hideProgressBar) {
+if (hideProgBar) {
   progressBar.style.display = 'none';
   progressContainer.style.display = 'none';
 }
@@ -135,7 +138,13 @@ function updateTimer() {
   timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
   const progress = ((totalTime - timeLeft) / totalTime) * 100;
-  progressBar.style.width = `${progress}%`;
+  if (countUpProgBar) {
+    progressBar.style.width = `${progress}%`;
+  } else {
+    // This is default
+    progressBar.style.width = `${100 - progress}%`;
+  }
+
 }
 
 window.onload = function () {
