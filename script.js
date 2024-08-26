@@ -158,3 +158,26 @@ window.addEventListener('obsSceneChanged', function(event) {
   endSound.pause();
   endSound.currentTime = 0;
 })
+
+var modal = document.getElementById("helpModal");
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks anywhere on the page, open the modal
+document.addEventListener('click', function() {
+  modal.style.display = "block";
+});
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function(event) {
+  console.log('click')
+  event.stopPropagation(); // Stop the click event from propagating to the document
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    event.stopPropagation(); // Stop the click event from propagating to the document
+    modal.style.display = "none";
+  }
+}

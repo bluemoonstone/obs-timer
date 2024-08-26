@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OBS Timer: Help</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Wrap in a div since OBS browser gives transparent background to body by default -->
+  <div id="help-container">
+    <h1>OBS Timer Help</h1>
+    <p>
+      <a href="/">Go back to timer</a>
+    </p>
+
+    <h2>Available Options</h2>
+    <p>You can set the following options through URL query strings.</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Parameters</th><th>Values</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>time</code></td>
+      <td>Time in minutes (default: <code>25</code>)</td>
+    </tr>
+    <tr>
+      <td><code>startSound</code></td>
+      <td>
+        Sound to play at the start of the timer (default: <code>0</code>, no sound)<br>
+        Available values:
+        <ul>
+          <li><code>0</code>: No sound</li>
+          <li><code>1</code>: Small bell <a href="#" class="play-sound" data-sound="small-bell">Play</a></li>
+          <li><code>2</code>: Small bell (3 times) <a href="#" class="play-sound" data-sound="small-bell-3">Play</a></li>
+          <li><code>3</code>: Shop door bell (3 times) <a href="#" class="play-sound" data-sound="shop-door-bell">Play</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>endSound</code></td>
+      <td>
+        Sound to play at the end of the timer (default: <code>0</code>, no sound)<br>
+        Available sounds are the same as the <code>startSound</code> parameter.
+      </td>
+    </tr>
+    <tr>
+      <td><code>loopEndSound</code></td>
+      <td>If set to <code>1</code>, continues playing the end sound until you change scenes in OBS. (default: <code>0</code>, no loop)<br>
+        This might be useful for people with hyperfocus, like me.<br>
+        In Studio Mode, you can stop the end sound without changing scenes by clicking the "Transition" button with the same scene.
+      </td>
+    </tr>
+    <tr>
+      <td><code>hideProgBar</code></td>
+      <td>If set to <code>1</code>, hides the progress bar. (default: <code>0</code>, show progress bar)
+      </td>
+    </tr>
+    <tr>
+      <td><code>hideTimer</code></td>
+      <td>If set to <code>1</code>, hides the timer. (default: <code>0</code>, show timer)
+      </td>
+    </tr>
+    <tr>
+      <td><code>countUpProgBar</code></td>
+      <td>If set to <code>1</code>, the progress bar starts from 0% and fills up to 100%. (default: <code>0</code>, starts from 100% and goes down)
+      </td>
+    </tr>
+    <tr>
+      <td><code>color</code></td>
+      <td>The foreground color for the time and the progress bar in hex-color value, without preceding #. (default: <code>fff</code> for white)<br>
+        It accepts the following formats:
+        <ul>
+          <li><code>RGB</code>: The 3 value shorthand syntax</li>
+          <li><code>RRGGBB</code>: The 6 value syntax</li>
+          <li><code>RRGGBBAA</code>: The 8 value syntax including alpha channel</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>bgColor</code></td>
+      <td>The background color in hex-color value, without preceding #. (default: <code>00000000</code> for transparent)<br>
+        It accepts the same formats as the <code>color</code> parameter.
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p>
+  Example: 5-minute timer, play small bell sound at the end, with a half-transparent black background color<br>
+  <code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa</code>
+</p>
+
+<!-- Audio elements -->
+<audio id="small-bell" src="../sounds/small-bell01.mp3"></audio>
+<audio id="small-bell-3" src="../sounds/small-bell01-3-long.mp3"></audio>
+<audio id="shop-door-bell" src="../sounds/shop-door-bell-6405-3.mp3"></audio>
+  <h2>Custom CSS in OBS</h2>
+  <p>
+    OBS browser source might have the following custom CSS by default:<br>
+    <code>body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }</code>
+  </p>
+  <p>
+    You need to remove the background-color in the custom CSS to enable the background-color option in the query strings.
+  </p>
+  <p>
+    In other words, you can customize styles that are not listed above as query parameter options, such as font-size, by using the custom CSS field in OBS.
+  </p>
+
+
+
+    <p>
+      <a href="/">Go back to timer</a>
+    </p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
