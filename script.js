@@ -4,6 +4,7 @@ function getQueryParams() {
   const startSoundNum = parseInt(params.get('startSound')) || 0;
   const endSoundNum = parseInt(params.get('endSound')) || 0;
   const loopEndSound = parseInt(params.get('loopEndSound')) || 0;
+  const voice = parseInt(params.get('voice')) || 0;
   const hideProgBar = parseInt(params.get('hideProgBar')) || 0;
   const hideTimer = parseInt(params.get('hideTimer')) || 0;
   const countUpProgBar = parseInt(params.get('countUpProgBar')) || 0;
@@ -20,6 +21,7 @@ function getQueryParams() {
     startSoundNum,
     endSoundNum,
     loopEndSound,
+    voice,
     hideProgBar,
     hideTimer,
     countUpProgBar,
@@ -39,6 +41,7 @@ const {
   startSoundNum,
   endSoundNum,
   loopEndSound,
+  voice,
   hideProgBar,
   hideTimer,
   countUpProgBar,
@@ -95,33 +98,81 @@ const endSoundPath = getSoundPath(endSoundNum);
 
 const startSound = startSoundPath ? new Audio(startSoundPath) : null;
 const endSound = endSoundPath ? new Audio(endSoundPath) : null;
+
+// Inaudible noise to prepare the sound device
+const noise = new Audio('sounds/noise.mp3');
+
 // Preload the audio files
 if (startSound) startSound.preload = 'auto';
 if (endSound) endSound.preload = 'auto';
+if (startSound || endSound || voice) noise.preload = 'auto'
+
+let voices = [];
+function loadVoices() {
+  voices = window.speechSynthesis.getVoices();
+  console.log(voices);
+}
+
+// Load voices when they are available
+window.speechSynthesis.onvoiceschanged = loadVoices;
+
+// Function to read aloud a message
+function speak(message) {
+  console.log("speak")
+  if (voices.length === 0) {
+    // Load voices if not already loaded
+    loadVoices();
+  }
+  console.log(voices)
+
+  const utterance = new SpeechSynthesisUtterance(message);
+  utterance.lang = 'en-US'
+  utterance.voice = voices.find((v) => v.name === 'Google US English' )
+  window.speechSynthesis.speak(utterance);
+}
+
+function prepareSoundDevice(callback) {
+  if (startSound || endSound || voice) {
+    noise.play() // Inaudible noise to prepare the sound device
+    setTimeout(() => {
+      callback();
+    }, 1000); // Wait for 1 second before executing the callback
+  }
+}
 
 function startTimer() {
   const now = Date.now();
   endTime = now + totalTime * 1000; // Set end time
-  if (startSound) {
-    startSound.pause();
-    startSound.currentTime = 0; // Ensure the sound to play from the start
-    startSound.play();
-  }
   timerInterval = setInterval(updateTimer, 1000);
+
+  prepareSoundDevice(() => {
+    if (startSound) {
+      startSound.pause();
+      startSound.currentTime = 0; // Ensure the sound to play from the start
+      startSound.play();
+    }
+    if (voice) {
+      speak("Let's begin.")
+    }
+  });
 }
 
 function stopTimer() {
   clearInterval(timerInterval);
-  if (endSound) {
-    endSound.pause();
-    endSound.currentTime = 0; // Ensure the sound to play from the start
-    endSound.play();
-  }
-
-  if (loopEndSound) {
-    // Keep repeating endSound until the scene is changed in OBS
-    endSound.loop = true;
-  }
+  prepareSoundDevice(() => {
+    if (voice) {
+      speak("Time's up.")
+    }
+    if (endSound) {
+      endSound.pause();
+      endSound.currentTime = 0; // Ensure the sound to play from the start
+      endSound.play();
+    }
+    if (loopEndSound) {
+      // Keep repeating endSound until the scene is changed in OBS
+      endSound.loop = true;
+    }
+  });
 }
 
 function updateTimer() {
@@ -145,6 +196,18 @@ function updateTimer() {
     progressBar.style.width = `${100 - progress}%`;
   }
 
+  prepareSoundDevice(() => {
+    if (voice) {
+      // Read aloud messages at certain times
+      if (timeLeft === Math.floor(totalTime / 2)) {
+        speak("You're halfway through.");
+      } else if (totalTime > 600 && timeLeft === 300) {
+        speak("5 minutes left.");
+      } else if (totalTime > 120 && timeLeft === 60) {
+        speak("1 minute left. Let's wrap up your work.");
+      }
+    }
+  });
 }
 
 window.onload = function () {

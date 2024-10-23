@@ -51,7 +51,20 @@
       <td><code>loopEndSound</code></td>
       <td>If set to <code>1</code>, continues playing the end sound until you change scenes in OBS. (default: <code>0</code>, no loop)<br>
         This might be useful for people with hyperfocus, like me.<br>
-        In Studio Mode, you can stop the end sound without changing scenes by clicking the "Transition" button with the same scene.
+        To stop the end sound without changing scenes, use OBS's Studio Mode and click the "Transition" button with the same scene.
+      </td>
+    </tr>
+    <tr>
+      <td><code>voice</code></td>
+      <td>If set to <code>1</code>, plays spoken navigation messages such as "Let's begin" and "You're halfway through." (default: <code>0</code>, no voice navigation)<br>
+        The messages are:<br>
+        <ul>
+          <li>Let's begin.</li>
+          <li>You're halfway through.</li>
+          <li>5 minutes left. (*Only when the total time longer than 10 minutes)</li>
+          <li>1 minute left. Let's wrap up your work. (*Only when the total time longer than 2 minutes)</li>
+          <li>Time's up.</li>
+        </ul>
       </td>
     </tr>
     <tr>
