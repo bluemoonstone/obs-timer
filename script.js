@@ -102,33 +102,31 @@ const endSound = endSoundPath ? new Audio(endSoundPath) : null;
 // Inaudible noise to prepare the sound device
 const noise = new Audio('sounds/noise.mp3');
 
+// Voice navigation sounds
+const voices = {
+  letsBegin: new Audio('sounds/lets-begin.mp3'),
+  halfWay: new Audio('sounds/half-way.mp3'),
+  fiveMins: new Audio('sounds/5-minutes-left.mp3'),
+  oneMin: new Audio('sounds/1-minute-left.mp3'),
+  timesUp: new Audio('sounds/times-up.mp3')
+}
+
 // Preload the audio files
 if (startSound) startSound.preload = 'auto';
 if (endSound) endSound.preload = 'auto';
 if (startSound || endSound || voice) noise.preload = 'auto'
-
-let voices = [];
-function loadVoices() {
-  voices = window.speechSynthesis.getVoices();
-  console.log(voices);
+if (voice) {
+  for (const key in voices) {
+    voices[key].preload = 'auto';
+  }
 }
 
-// Load voices when they are available
-window.speechSynthesis.onvoiceschanged = loadVoices;
+setVoiceVolume(0.75);
 
-// Function to read aloud a message
-function speak(message) {
-  console.log("speak")
-  if (voices.length === 0) {
-    // Load voices if not already loaded
-    loadVoices();
+function setVoiceVolume(volume) {
+  for (const key in voices) {
+    voices[key].volume = volume;
   }
-  console.log(voices)
-
-  const utterance = new SpeechSynthesisUtterance(message);
-  utterance.lang = 'en-US'
-  utterance.voice = voices.find((v) => v.name === 'Google US English' )
-  window.speechSynthesis.speak(utterance);
 }
 
 function prepareSoundDevice(callback) {
@@ -152,7 +150,7 @@ function startTimer() {
       startSound.play();
     }
     if (voice) {
-      speak("Let's begin.")
+      voices.letsBegin.play()
     }
   });
 }
@@ -161,7 +159,7 @@ function stopTimer() {
   clearInterval(timerInterval);
   prepareSoundDevice(() => {
     if (voice) {
-      speak("Time's up.")
+      voices.timesUp.play()
     }
     if (endSound) {
       endSound.pause();
@@ -200,11 +198,11 @@ function updateTimer() {
     if (voice) {
       // Read aloud messages at certain times
       if (timeLeft === Math.floor(totalTime / 2)) {
-        speak("You're halfway through.");
+        voices.halfWay.play();
       } else if (totalTime > 600 && timeLeft === 300) {
-        speak("5 minutes left.");
+        voices.fiveMins.play();
       } else if (totalTime > 120 && timeLeft === 60) {
-        speak("1 minute left. Let's wrap up your work.");
+        voices.oneMin.play();
       }
     }
   });
@@ -217,7 +215,6 @@ window.onload = function () {
 // When the scene is changed in OBS, stop the sounds.
 // This is to prevent the sounds from playing when switching back to the previous scene.
 window.addEventListener('obsSceneChanged', function(event) {
-  console.log('obsSceneChanged:', event);
   endSound.pause();
   endSound.currentTime = 0;
 })
@@ -232,7 +229,6 @@ document.addEventListener('click', function() {
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function(event) {
-  console.log('click')
   event.stopPropagation(); // Stop the click event from propagating to the document
   modal.style.display = "none";
 }
