@@ -5,6 +5,7 @@ function getQueryParams() {
   const endSoundNum = parseInt(params.get('endSound')) || 0;
   const loopEndSound = parseInt(params.get('loopEndSound')) || 0;
   const voice = parseInt(params.get('voice')) || 0;
+  const voiceVolume = parseFloat(params.get('voiceVolume')) || 0.5;
   const hideProgBar = parseInt(params.get('hideProgBar')) || 0;
   const hideTimer = parseInt(params.get('hideTimer')) || 0;
   const countUpProgBar = parseInt(params.get('countUpProgBar')) || 0;
@@ -22,6 +23,7 @@ function getQueryParams() {
     endSoundNum,
     loopEndSound,
     voice,
+    voiceVolume,
     hideProgBar,
     hideTimer,
     countUpProgBar,
@@ -42,6 +44,7 @@ const {
   endSoundNum,
   loopEndSound,
   voice,
+  voiceVolume,
   hideProgBar,
   hideTimer,
   countUpProgBar,
@@ -121,7 +124,7 @@ if (voice) {
   }
 }
 
-setVoiceVolume(0.75);
+setVoiceVolume(voiceVolume);
 
 function setVoiceVolume(volume) {
   for (const key in voices) {
