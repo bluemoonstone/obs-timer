@@ -2,10 +2,14 @@ function getQueryParams() {
   const params = new URLSearchParams(window.location.search);
   const totalTimeMin = parseFloat(params.get('time')) || 25; // Default to 25 minutes if not provided
   const startSoundNum = parseInt(params.get('startSound')) || 0;
+  const startSoundVol = parseFloat(params.get('startSoundVol')) || 1;
   const endSoundNum = parseInt(params.get('endSound')) || 0;
+  const endSoundVol = parseFloat(params.get('endSoundVol')) || 1;
   const loopEndSound = parseInt(params.get('loopEndSound')) || 0;
   const voice = parseInt(params.get('voice')) || 0;
-  const voiceVolume = parseFloat(params.get('voiceVolume')) || 0.5;
+  const voiceVol = parseFloat(params.get('voiceVol')) || 1;
+  const preChimeNum = parseInt(params.get('preChime')) || 0;
+  const preChimeVol = parseFloat(params.get('preChimeVol')) || 1;
   const hideProgBar = parseInt(params.get('hideProgBar')) || 0;
   const hideTimer = parseInt(params.get('hideTimer')) || 0;
   const countUpProgBar = parseInt(params.get('countUpProgBar')) || 0;
@@ -20,10 +24,14 @@ function getQueryParams() {
   return {
     totalTimeMin,
     startSoundNum,
+    startSoundVol,
     endSoundNum,
+    endSoundVol,
     loopEndSound,
     voice,
-    voiceVolume,
+    voiceVol,
+    preChimeNum,
+    preChimeVol,
     hideProgBar,
     hideTimer,
     countUpProgBar,
@@ -41,10 +49,14 @@ function isValidColor(colorParam) {
 const {
   totalTimeMin,
   startSoundNum,
+  startSoundVol,
   endSoundNum,
+  endSoundVol,
   loopEndSound,
   voice,
-  voiceVolume,
+  voiceVol,
+  preChimeNum,
+  preChimeVol,
   hideProgBar,
   hideTimer,
   countUpProgBar,
@@ -91,6 +103,8 @@ function getSoundPath(soundNum) {
       return 'sounds/small-bell01-3-long.mp3';
     case 3:
       return 'sounds/shop-door-bell-6405-3.mp3';
+    case 4:
+      return 'sounds/soft-chime.mp3';
     default:
       return null;
   }
@@ -98,21 +112,17 @@ function getSoundPath(soundNum) {
 
 const startSoundPath = getSoundPath(startSoundNum);
 const endSoundPath = getSoundPath(endSoundNum);
+const preChimePath = getSoundPath(preChimeNum);
 
 const startSound = startSoundPath ? new Audio(startSoundPath) : null;
 const endSound = endSoundPath ? new Audio(endSoundPath) : null;
+const preChime = preChimePath ? new Audio(preChimePath) : null;
 
 // Inaudible noise to prepare the sound device
 const noise = new Audio('sounds/noise.mp3');
 
 // Voice navigation sounds
-const voices = {
-  letsBegin: new Audio('sounds/lets-begin.mp3'),
-  halfWay: new Audio('sounds/half-way.mp3'),
-  fiveMins: new Audio('sounds/5-minutes-left.mp3'),
-  oneMin: new Audio('sounds/1-minute-left.mp3'),
-  timesUp: new Audio('sounds/times-up.mp3')
-}
+const voices = getVoices();
 
 // Preload the audio files
 if (startSound) startSound.preload = 'auto';
@@ -124,7 +134,31 @@ if (voice) {
   }
 }
 
-setVoiceVolume(voiceVolume);
+// Set volume
+setVoiceVolume(voiceVol);
+if (startSound) startSound.volume = startSoundVol;
+if (endSound) endSound.volume = endSoundVol;
+if (preChime) preChime.volume = preChimeVol;
+
+// set loop
+if (endSound && loopEndSound) {
+  // Keep repeating endSound until the scene is changed in OBS
+  endSound.loop = true;
+}
+
+function getVoices() {
+  if (voice) {
+    return {
+      letsBegin: new Audio('sounds/lets-begin.mp3'),
+      halfWay: new Audio('sounds/half-way.mp3'),
+      fiveMins: new Audio('sounds/5-minutes-left.mp3'),
+      oneMin: new Audio('sounds/1-minute-left.mp3'),
+      timesUp: new Audio('sounds/times-up.mp3')
+    };
+  } else {
+    return {};
+  }
+}
 
 function setVoiceVolume(volume) {
   for (const key in voices) {
@@ -141,19 +175,36 @@ function prepareSoundDevice(callback) {
   }
 }
 
+function playSound(soundFile) {
+  soundFile.pause();
+  soundFile.currentTime = 0; // Ensure the sound to play from the start
+  soundFile.play();
+}
+
+function playVoice(voiceFile, preChime) {
+  if (preChime) {
+    playSound(preChime);
+    setTimeout(() => {
+      voiceFile.play();
+    }, 800)
+  } else {
+    voiceFile.play();
+  }
+}
+
+// Timer
 function startTimer() {
   const now = Date.now();
   endTime = now + totalTime * 1000; // Set end time
   timerInterval = setInterval(updateTimer, 1000);
 
   prepareSoundDevice(() => {
-    if (startSound) {
-      startSound.pause();
-      startSound.currentTime = 0; // Ensure the sound to play from the start
-      startSound.play();
-    }
-    if (voice) {
-      voices.letsBegin.play()
+    if (startSound && voice) {
+      playVoice(voices.letsBegin, startSound);
+    } else if (startSound) {
+      playSound(startSound);
+    } else if (voice) {
+      playVoice(voices.letsBegin);
     }
   });
 }
@@ -161,17 +212,12 @@ function startTimer() {
 function stopTimer() {
   clearInterval(timerInterval);
   prepareSoundDevice(() => {
-    if (voice) {
-      voices.timesUp.play()
-    }
-    if (endSound) {
-      endSound.pause();
-      endSound.currentTime = 0; // Ensure the sound to play from the start
-      endSound.play();
-    }
-    if (loopEndSound) {
-      // Keep repeating endSound until the scene is changed in OBS
-      endSound.loop = true;
+    if (endSound && voice) {
+      playVoice(voices.timesUp, endSound);
+    } else if (endSound) {
+      playSound(endSound);
+    } else if (voice) {
+      playVoice(voices.timesUp);
     }
   });
 }
@@ -201,11 +247,11 @@ function updateTimer() {
     if (voice) {
       // Read aloud messages at certain times
       if (timeLeft === Math.floor(totalTime / 2)) {
-        voices.halfWay.play();
+        playVoice(voices.halfWay, preChime);
       } else if (totalTime > 600 && timeLeft === 300) {
-        voices.fiveMins.play();
+        playVoice(voices.fiveMins, preChime);
       } else if (totalTime > 120 && timeLeft === 60) {
-        voices.oneMin.play();
+        playVoice(voices.oneMin, preChime);
       }
     }
   });

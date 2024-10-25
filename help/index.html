@@ -16,6 +16,10 @@
 
     <h2>Available Options</h2>
     <p>You can set the following options through URL query strings.</p>
+    <p>
+      Example: 5-minute timer, play small bell sound at the end, with a half-transparent black background color<br>
+      <code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa</code> <a href="https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa">Preview</a>
+    </p>
 <table class="table">
   <thead>
     <tr>
@@ -37,7 +41,13 @@
           <li><code>1</code>: Small bell <a href="#" class="play-sound" data-sound="small-bell">Play</a></li>
           <li><code>2</code>: Small bell (3 times) <a href="#" class="play-sound" data-sound="small-bell-3">Play</a></li>
           <li><code>3</code>: Shop door bell (3 times) <a href="#" class="play-sound" data-sound="shop-door-bell">Play</a></li>
+          <li><code>4</code>: Soft chime <a href="#" class="play-sound" data-sound="soft-chime">Play</a></li>
         </ul>
+      </td>
+    </tr>
+    <tr>
+      <td><code>startSoundVol</code></td>
+      <td>The volume of the start sound. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
       </td>
     </tr>
     <tr>
@@ -48,9 +58,15 @@
       </td>
     </tr>
     <tr>
+      <td><code>endSoundVol</code></td>
+      <td>The volume of the end sound. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
+      </td>
+    </tr>
+    <tr>
       <td><code>loopEndSound</code></td>
       <td>If set to <code>1</code>, continues playing the end sound until you change scenes in OBS. (default: <code>0</code>, no loop)<br>
         This might be useful for people with hyperfocus, like me.<br>
+        <br>
         To stop the end sound without changing scenes, use OBS's Studio Mode and click the "Transition" button with the same scene.
       </td>
     </tr>
@@ -68,8 +84,22 @@
       </td>
     </tr>
     <tr>
-      <td><code>voiceVolume</code></td>
-      <td>The volume of the spoken voice messages. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>0.5</code>)
+      <td><code>voiceVol</code></td>
+      <td>The volume of the spoken voice messages. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
+      </td>
+    </tr>
+    <tr>
+      <td><code>preChime</code></td>
+      <td>
+        Sound to play before the voice messages in the middle of the session, so that they don't surprise you. (default: <code>0</code>, no sound)<br>
+        Available sounds are the same as the <code>startSound</code> parameter.<br>
+        <br>
+        To add sounds before the messages at the start and end of the session, use <code>startSound</code> and <code>endSound</code> parameters.<br>
+      </td>
+    </tr>
+    <tr>
+      <td><code>preChimeVol</code></td>
+      <td>The volume of the pre-chime. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
       </td>
     </tr>
     <tr>
@@ -106,15 +136,7 @@
     </tr>
   </tbody>
 </table>
-<p>
-  Example: 5-minute timer, play small bell sound at the end, with a half-transparent black background color<br>
-  <code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa</code>
-</p>
 
-<!-- Audio elements -->
-<audio id="small-bell" src="../sounds/small-bell01.mp3"></audio>
-<audio id="small-bell-3" src="../sounds/small-bell01-3-long.mp3"></audio>
-<audio id="shop-door-bell" src="../sounds/shop-door-bell-6405-3.mp3"></audio>
   <h2>Custom CSS in OBS</h2>
   <p>
     OBS browser source might have the following custom CSS by default:<br>
@@ -127,13 +149,32 @@
     In other words, you can customize styles that are not listed above as query parameter options, such as font-size, by using the custom CSS field in OBS.
   </p>
 
+  <h2>Sound Playback Error in External Browsers</h2>
 
+  <p>
+    When you use this time in browsers like Chrome or Firefox, the timer sound won't play automatically until you click somewhere on the page. This is a restriction on modern browsers.
+  </p>
+  <p>
+    You will see an error like below in the devtool:<br>
+    <code>NotAllowedError: play() failed because the user didn't interact with the document first.</code>
+  </p>
+  <p>
+    This error shouldn't happen if you use the built-in browser source in OBS.
+  </p>
 
     <p>
       <a href="../">Go back to timer</a>
     </p>
+    <p>
+      <a href="https://github.com/bluemoonstone/obs-timer" target="_blank">GitHub</a>
+    </p>
   </div>
 
   <script src="script.js"></script>
+  <!-- Audio elements -->
+  <audio id="small-bell" src="../sounds/small-bell01.mp3"></audio>
+  <audio id="small-bell-3" src="../sounds/small-bell01-3-long.mp3"></audio>
+  <audio id="shop-door-bell" src="../sounds/shop-door-bell-6405-3.mp3"></audio>
+  <audio id="soft-chime" src="../sounds/soft-chime.mp3"></audio>
 </body>
 </html>
