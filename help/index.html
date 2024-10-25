@@ -3,23 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OBS Timer: Help</title>
+  <title>OBS Browser Source Timer: Help</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <!-- Wrap in a div since OBS browser gives transparent background to body by default -->
   <div id="help-container">
-    <h1>OBS Timer Help</h1>
+    <h1>OBS Browser Source Timer Help</h1>
     <p>
       <a href="../">Go back to timer</a>
     </p>
+    <h2>How to Use</h2>
+    <p>This timer is intended for use in OBS's built-in browser source.</p>
+
+    <p>To see it in action, add a "Browser" source in OBS, and set the URL to: <code>https://bluemoonstone.github.io/obs-timer/</code>
+    </p>
+
+    <p>
+      You will see a 25 minute timer with a transparent background.
+    </p>
+
+    <img id="screenshot" src="../images/screenshot.png">
 
     <h2>Available Options</h2>
-    <p>You can set the following options through URL query strings.</p>
+    <p>You can set the options through URL query strings.</p>
     <p>
       Example: 5-minute timer, play small bell sound at the end, with a half-transparent black background color<br>
       <code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa</code> <a href="https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa">Preview</a>
     </p>
+
+    <p>
+      After you choose everything you want, write down the URL (OBS's browser source should remember it). Then you can use the same URL to start the same timer.
+    </p>
+
+    <p>
+      Here are all the available parameters:
+    </p>
+
 <table class="table">
   <thead>
     <tr>
@@ -40,8 +60,9 @@
           <li><code>0</code>: No sound</li>
           <li><code>1</code>: Small bell <a href="#" class="play-sound" data-sound="small-bell">Play</a></li>
           <li><code>2</code>: Small bell (3 times) <a href="#" class="play-sound" data-sound="small-bell-3">Play</a></li>
-          <li><code>3</code>: Shop door bell (3 times) <a href="#" class="play-sound" data-sound="shop-door-bell">Play</a></li>
-          <li><code>4</code>: Soft chime <a href="#" class="play-sound" data-sound="soft-chime">Play</a></li>
+          <li><code>3</code>: Shop door bell <a href="#" class="play-sound" data-sound="shop-door-bell">Play</a></li>
+          <li><code>4</code>: Shop door bell (3 times) <a href="#" class="play-sound" data-sound="shop-door-bell-3">Play</a></li>
+          <li><code>5</code>: Soft chime <a href="#" class="play-sound" data-sound="soft-chime">Play</a></li>
         </ul>
       </td>
     </tr>
@@ -137,6 +158,23 @@
   </tbody>
 </table>
 
+  <h2>How to Switch Timers</h2>
+  <p>
+    You can easily switch between different timers by creating multiple browser sources.
+  </p>
+  <p>
+    For example, you can create 3 browser sources for 25-minute, 5-minute, and 15-minute timers for your Pomodoro session.
+    <ul>
+      <li><code>https://bluemoonstone.github.io/obs-timer/?time=25&endSound=1</code></li>
+      <li><code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1</code></li>
+      <li><code>https://bluemoonstone.github.io/obs-timer/?time=15&endSound=1</code></li>
+    </ul>
+  </p>
+
+  <p>
+    You can even use hotkeys to switch timers by assigning each browser source to different scenes and setting "Switch to scene" hotkeys in the OBS settings.
+  </p>
+
   <h2>Custom CSS in OBS</h2>
   <p>
     OBS browser source might have the following custom CSS by default:<br>
@@ -150,9 +188,8 @@
   </p>
 
   <h2>Sound Playback Error in External Browsers</h2>
-
   <p>
-    When you use this time in browsers like Chrome or Firefox, the timer sound won't play automatically until you click somewhere on the page. This is a restriction on modern browsers.
+    When you use this timer in browsers like Chrome or Firefox, the timer sound won't play automatically until you click somewhere on the page. This is a restriction on modern browsers.
   </p>
   <p>
     You will see an error like below in the devtool:<br>
@@ -172,9 +209,10 @@
 
   <script src="script.js"></script>
   <!-- Audio elements -->
-  <audio id="small-bell" src="../sounds/small-bell01.mp3"></audio>
-  <audio id="small-bell-3" src="../sounds/small-bell01-3-long.mp3"></audio>
-  <audio id="shop-door-bell" src="../sounds/shop-door-bell-6405-3.mp3"></audio>
-  <audio id="soft-chime" src="../sounds/soft-chime.mp3"></audio>
+  <audio id="small-bell" src="../sounds/small-bell01.mp3" preload="none"></audio>
+  <audio id="small-bell-3" src="../sounds/small-bell01-3-long.mp3" preload="none"></audio>
+  <audio id="shop-door-bell" src="../sounds/shop-door-bell-6405.mp3" preload="none"></audio>
+  <audio id="shop-door-bell-3" src="../sounds/shop-door-bell-6405-3.mp3" preload="none"></audio>
+  <audio id="soft-chime" src="../sounds/soft-chime.mp3" preload="none"></audio>
 </body>
 </html>

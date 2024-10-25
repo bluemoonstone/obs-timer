@@ -28,3 +28,8 @@ code {
   padding: 4px 8px;
   border: 2px solid #ddd;
 }
+
+img#screenshot {
+  width: 100%;
+  max-width: max-content;
+}
