@@ -6,7 +6,7 @@ No installation, plugins, or scripts required.
 
 To see it in action, add a "Browser" source in OBS, and set the URL to `https://bluemoonstone.github.io/obs-timer/`.
 
-![OBS Browser Source Timer Screenshot](./images/screenshot.png)
+![OBS Browser Source Timer Screenshot](./docs/images/screenshot.png)
 
 ## Features
 
