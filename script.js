@@ -102,8 +102,10 @@ function getSoundPath(soundNum) {
     case 2:
       return 'sounds/small-bell01-3-long.mp3';
     case 3:
-      return 'sounds/shop-door-bell-6405-3.mp3';
+      return 'sounds/shop-door-bell-6405.mp3';
     case 4:
+      return 'sounds/shop-door-bell-6405-3.mp3';
+    case 5:
       return 'sounds/soft-chime.mp3';
     default:
       return null;
@@ -124,15 +126,19 @@ const noise = new Audio('sounds/noise.mp3');
 // Voice navigation sounds
 const voices = getVoices();
 
-// Preload the audio files
-if (startSound) startSound.preload = 'auto';
-if (endSound) endSound.preload = 'auto';
-if (startSound || endSound || voice) noise.preload = 'auto'
+// Don't preload sounds that are not needed at start
+// The default value for preload is 'auto'
 if (voice) {
   for (const key in voices) {
-    voices[key].preload = 'auto';
+    if (key === 'letsBegin') {
+      voices[key].preload = 'auto';
+    } else {
+      voices[key].preload = 'none';
+    }
   }
 }
+if (preChime) preChime.preload = 'none';
+if (endSound) endSound.preload = 'none';
 
 // Set volume
 setVoiceVolume(voiceVol);
