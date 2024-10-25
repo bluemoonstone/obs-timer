@@ -12,7 +12,7 @@ To see it in action, add a "Browser" source in OBS, and set the URL to `https://
 
 - Progress bar (show/hide)
 - Numerical time display (show/hide)
-- Background/forground color and transparency
+- Transparent background (customizable with custom CSS in OBS)
 - Start/end sounds
 - Voice reminders
 

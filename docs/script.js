@@ -13,13 +13,7 @@ function getQueryParams() {
   const hideProgBar = parseInt(params.get('hideProgBar')) || 0;
   const hideTimer = parseInt(params.get('hideTimer')) || 0;
   const countUpProgBar = parseInt(params.get('countUpProgBar')) || 0;
-
-  // Validate user input
-  const colorParam = params.get('color') || '';
-  const bgColorParam = params.get('bgColor') || '';
-  // Use the validated color or a default value
-  const color = isValidColor(colorParam) ? `${colorParam}` : '';
-  const bgColor = isValidColor(bgColorParam) ? `${bgColorParam}` : '';
+  const hideShadow = parseInt(params.get('hideShadow')) || 0;
 
   return {
     totalTimeMin,
@@ -35,15 +29,8 @@ function getQueryParams() {
     hideProgBar,
     hideTimer,
     countUpProgBar,
-    color,
-    bgColor
+    hideShadow
   };
-}
-
-function isValidColor(colorParam) {
-  // Validate the color parameter using a regular expression
-  // Allow 3, 6, or 8 character hex codes
-  return /^([0-9A-F]{3}){1,2}([0-9A-F]{2})?$/i.test(colorParam);
 }
 
 const {
@@ -60,8 +47,7 @@ const {
   hideProgBar,
   hideTimer,
   countUpProgBar,
-  color,
-  bgColor
+  hideShadow
 } = getQueryParams();
 
 let totalTime = totalTimeMin * 60;
@@ -81,18 +67,8 @@ if (hideTimer) {
   timerDisplay.style.display = 'none';
 }
 
-if (color.length > 0) {
-  document.documentElement.style.setProperty('--timer-color', `#${color}`);
-} else {
-  // Use default color
-  document.documentElement.style.setProperty('--timer-color', `#fff`);
-}
-
-if (bgColor.length > 0) {
-  document.documentElement.style.setProperty('--bg-color', `#${bgColor}`);
-} else {
-  // Use default color
-  document.documentElement.style.setProperty('--bg-color', `#00000000`);
+if (hideShadow) {
+  document.documentElement.style.setProperty('--shadow', '0 0 0 #00000000');
 }
 
 function getSoundPath(soundNum) {

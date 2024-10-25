@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OBS Browser Source Timer: Help</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <!-- Wrap in a div since OBS browser gives transparent background to body by default -->
   <div id="help-container">
@@ -16,7 +18,8 @@
     <h2>How to Use</h2>
     <p>This timer is intended for use in OBS's built-in browser source.</p>
 
-    <p>To see it in action, add a "Browser" source in OBS, and set the URL to: <code>https://bluemoonstone.github.io/obs-timer/</code>
+    <p>To see it in action, add a "Browser" source in OBS, and set the URL to:
+      <code>https://bluemoonstone.github.io/obs-timer/</code>
     </p>
 
     <p>
@@ -28,182 +31,190 @@
     <h2>Available Options</h2>
     <p>You can set the options through URL query strings.</p>
     <p>
-      Example: 5-minute timer, play small bell sound at the end, with a half-transparent black background color<br>
-      <code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1&bgColor=000000aa</code> <a href="../?time=5&endSound=1&bgColor=000000aa">Preview</a>
+      Example: 5-minute timer with small bell sound at the beginning and shop bell sound at the end<br>
+      <code>https://bluemoonstone.github.io/obs-timer/?time=5&startSound=1&endSound=3</code> <a
+        href="../?time=5&startSound=1&endSound=3">Preview</a>
     </p>
 
     <p>
-      After you choose everything you want, write down the URL (OBS's browser source should remember it). Then you can use the same URL to start the same timer.
+      After you choose everything you want, write down the URL (OBS's browser source should remember it). Then you can
+      use the same URL to start the same timer.
     </p>
 
     <p>
       Here are all the available parameters:
     </p>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Parameters</th><th>Values</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>time</code></td>
-      <td>Time in minutes (default: <code>25</code>)</td>
-    </tr>
-    <tr>
-      <td><code>startSound</code></td>
-      <td>
-        Sound to play at the start of the timer (default: <code>0</code>, no sound)<br>
-        Available values:
-        <ul>
-          <li><code>0</code>: No sound</li>
-          <li><code>1</code>: Small bell <a href="#" class="play-sound" data-sound="small-bell">Play</a></li>
-          <li><code>2</code>: Small bell (3 times) <a href="#" class="play-sound" data-sound="small-bell-3">Play</a></li>
-          <li><code>3</code>: Shop door bell <a href="#" class="play-sound" data-sound="shop-door-bell">Play</a></li>
-          <li><code>4</code>: Shop door bell (3 times) <a href="#" class="play-sound" data-sound="shop-door-bell-3">Play</a></li>
-          <li><code>5</code>: Soft chime <a href="#" class="play-sound" data-sound="soft-chime">Play</a></li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><code>startSoundVol</code></td>
-      <td>The volume of the start sound. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
-      </td>
-    </tr>
-    <tr>
-      <td><code>endSound</code></td>
-      <td>
-        Sound to play at the end of the timer (default: <code>0</code>, no sound)<br>
-        Available sounds are the same as the <code>startSound</code> parameter.
-      </td>
-    </tr>
-    <tr>
-      <td><code>endSoundVol</code></td>
-      <td>The volume of the end sound. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
-      </td>
-    </tr>
-    <tr>
-      <td><code>loopEndSound</code></td>
-      <td>If set to <code>1</code>, continues playing the end sound until you change scenes in OBS. (default: <code>0</code>, no loop)<br>
-        This might be useful for people with hyperfocus, like me.<br>
-        <br>
-        To stop the end sound without changing scenes, use OBS's Studio Mode and click the "Transition" button with the same scene.
-      </td>
-    </tr>
-    <tr>
-      <td><code>voice</code></td>
-      <td>If set to <code>1</code>, plays spoken navigation messages such as "Let's begin" and "You're halfway through." (default: <code>0</code>, no voice navigation)<br>
-        The messages are:<br>
-        <ul>
-          <li>Let's begin.</li>
-          <li>You're halfway through.</li>
-          <li>5 minutes left. (*Only when the total time longer than 10 minutes)</li>
-          <li>1 minute left. Let's wrap up your work. (*Only when the total time longer than 2 minutes)</li>
-          <li>Time's up.</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><code>voiceVol</code></td>
-      <td>The volume of the spoken voice messages. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
-      </td>
-    </tr>
-    <tr>
-      <td><code>preChime</code></td>
-      <td>
-        Sound to play before the voice messages in the middle of the session, so that they don't surprise you. (default: <code>0</code>, no sound)<br>
-        Available sounds are the same as the <code>startSound</code> parameter.<br>
-        <br>
-        To add sounds before the messages at the start and end of the session, use <code>startSound</code> and <code>endSound</code> parameters.<br>
-      </td>
-    </tr>
-    <tr>
-      <td><code>preChimeVol</code></td>
-      <td>The volume of the pre-chime. Takes a decimal point value between <code>0</code> and <code>1</code> (default: <code>1</code>)
-      </td>
-    </tr>
-    <tr>
-      <td><code>hideProgBar</code></td>
-      <td>If set to <code>1</code>, hides the progress bar. (default: <code>0</code>, show progress bar)
-      </td>
-    </tr>
-    <tr>
-      <td><code>hideTimer</code></td>
-      <td>If set to <code>1</code>, hides the timer. (default: <code>0</code>, show timer)
-      </td>
-    </tr>
-    <tr>
-      <td><code>countUpProgBar</code></td>
-      <td>If set to <code>1</code>, the progress bar starts from 0% and fills up to 100%. (default: <code>0</code>, starts from 100% and goes down)
-      </td>
-    </tr>
-    <tr>
-      <td><code>color</code></td>
-      <td>The foreground color for the time and the progress bar in hex-color value, without preceding #. (default: <code>fff</code> for white)<br>
-        It accepts the following formats:
-        <ul>
-          <li><code>RGB</code>: The 3 value shorthand syntax</li>
-          <li><code>RRGGBB</code>: The 6 value syntax</li>
-          <li><code>RRGGBBAA</code>: The 8 value syntax including alpha channel</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td><code>bgColor</code></td>
-      <td>The background color in hex-color value, without preceding #. (default: <code>00000000</code> for transparent)<br>
-        It accepts the same formats as the <code>color</code> parameter.
-      </td>
-    </tr>
-  </tbody>
-</table>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Parameters</th>
+          <th>Values</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>time</code></td>
+          <td>Time in minutes (default: <code>25</code>)</td>
+        </tr>
+        <tr>
+          <td><code>startSound</code></td>
+          <td>
+            Sound to play at the start of the timer (default: <code>0</code>, no sound)<br>
+            Available values:
+            <ul>
+              <li><code>0</code>: No sound</li>
+              <li><code>1</code>: Small bell <a href="#" class="play-sound" data-sound="small-bell">Play</a></li>
+              <li><code>2</code>: Small bell (3 times) <a href="#" class="play-sound" data-sound="small-bell-3">Play</a>
+              </li>
+              <li><code>3</code>: Shop door bell <a href="#" class="play-sound" data-sound="shop-door-bell">Play</a>
+              </li>
+              <li><code>4</code>: Shop door bell (3 times) <a href="#" class="play-sound"
+                  data-sound="shop-door-bell-3">Play</a></li>
+              <li><code>5</code>: Soft chime <a href="#" class="play-sound" data-sound="soft-chime">Play</a></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code>startSoundVol</code></td>
+          <td>The volume of the start sound. Takes a decimal point value between <code>0</code> and <code>1</code>
+            (default: <code>1</code>)
+          </td>
+        </tr>
+        <tr>
+          <td><code>endSound</code></td>
+          <td>
+            Sound to play at the end of the timer (default: <code>0</code>, no sound)<br>
+            Available sounds are the same as the <code>startSound</code> parameter.
+          </td>
+        </tr>
+        <tr>
+          <td><code>endSoundVol</code></td>
+          <td>The volume of the end sound. Takes a decimal point value between <code>0</code> and <code>1</code>
+            (default: <code>1</code>)
+          </td>
+        </tr>
+        <tr>
+          <td><code>loopEndSound</code></td>
+          <td>If set to <code>1</code>, continues playing the end sound until you change scenes in OBS. (default:
+            <code>0</code>, no loop)<br>
+            This might be useful for people with hyperfocus, like me.<br>
+            <br>
+            To stop the end sound without changing scenes, use OBS's Studio Mode and click the "Transition" button with
+            the same scene.
+          </td>
+        </tr>
+        <tr>
+          <td><code>voice</code></td>
+          <td>If set to <code>1</code>, plays spoken navigation messages such as "Let's begin" and "You're halfway
+            through." (default: <code>0</code>, no voice navigation)<br>
+            The messages are:<br>
+            <ul>
+              <li>Let's begin.</li>
+              <li>You're halfway through.</li>
+              <li>5 minutes left. (*Only when the total time longer than 10 minutes)</li>
+              <li>1 minute left. Let's wrap up your work. (*Only when the total time longer than 2 minutes)</li>
+              <li>Time's up.</li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td><code>voiceVol</code></td>
+          <td>The volume of the spoken voice messages. Takes a decimal point value between <code>0</code> and
+            <code>1</code> (default: <code>1</code>)
+          </td>
+        </tr>
+        <tr>
+          <td><code>preChime</code></td>
+          <td>
+            Sound to play before the voice messages in the middle of the session, so that they don't surprise you.
+            (default: <code>0</code>, no sound)<br>
+            Available sounds are the same as the <code>startSound</code> parameter.<br>
+            <br>
+            To add sounds before the messages at the start and end of the session, use <code>startSound</code> and
+            <code>endSound</code> parameters.<br>
+          </td>
+        </tr>
+        <tr>
+          <td><code>preChimeVol</code></td>
+          <td>The volume of the pre-chime. Takes a decimal point value between <code>0</code> and <code>1</code>
+            (default: <code>1</code>)
+          </td>
+        </tr>
+        <tr>
+          <td><code>hideProgBar</code></td>
+          <td>If set to <code>1</code>, hides the progress bar. (default: <code>0</code>, show progress bar)
+          </td>
+        </tr>
+        <tr>
+          <td><code>hideTimer</code></td>
+          <td>If set to <code>1</code>, hides the timer. (default: <code>0</code>, show timer)
+          </td>
+        </tr>
+        <tr>
+          <td><code>countUpProgBar</code></td>
+          <td>If set to <code>1</code>, the progress bar starts from 0% and fills up to 100%. (default: <code>0</code>,
+            starts from 100% and goes down)
+          </td>
+        </tr>
+        <tr>
+          <td><code>hideShadow</code></td>
+          <td>If set to <code>1</code>, hides the shadow around the timer. (default: <code>0</code>, apply shadow)
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-  <h2>How to Switch Timers</h2>
-  <p>
-    You can easily switch between different timers by creating multiple browser sources.
-  </p>
-  <p>
-    For example, you can create 3 browser sources for 25-minute, 5-minute, and 15-minute timers for your Pomodoro session.
+    <h2>How to Switch Timers</h2>
+    <p>
+      You can easily switch between different timers by creating multiple browser sources.
+    </p>
+    <p>
+      For example, you can create 3 browser sources for 25-minute, 5-minute, and 15-minute timers for your Pomodoro
+      session.
     <ul>
       <li><code>https://bluemoonstone.github.io/obs-timer/?time=25&endSound=1</code></li>
       <li><code>https://bluemoonstone.github.io/obs-timer/?time=5&endSound=1</code></li>
       <li><code>https://bluemoonstone.github.io/obs-timer/?time=15&endSound=1</code></li>
     </ul>
-  </p>
+    </p>
 
-  <p>
-    You can even use hotkeys to switch timers by assigning each browser source to different scenes and setting "Switch to scene" hotkeys in the OBS settings.
-  </p>
+    <p>
+      You can even use hotkeys to switch timers by assigning each browser source to different scenes and setting "Switch
+      to scene" hotkeys in the OBS settings.
+    </p>
 
-  <h2>Custom CSS in OBS</h2>
-  <p>
-    OBS browser source might have the following custom CSS by default:<br>
-    <code>body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }</code>
-  </p>
-  <p>
-    You need to remove the background-color in the custom CSS to enable the background-color option in the query strings.
-  </p>
-  <p>
-    In other words, you can customize styles that are not listed above as query parameter options, such as font-size, by using the custom CSS field in OBS.
-  </p>
+    <h2>Custom CSS in OBS</h2>
+    <p>
+      OBS browser source might have the following custom CSS by default:<br>
+      <code>body { background-color: rgba(0, 0, 0, 0); margin: 0px auto; overflow: hidden; }</code>
+    </p>
+    <p>
+      You can customize styles that are not listed above as query parameter options, such as font-size or color by using
+      the custom CSS.
+    </p>
 
-  <h2>Sound Playback Error in External Browsers</h2>
-  <p>
-    When you use this timer in browsers like Chrome or Firefox, the timer sound won't play automatically until you click somewhere on the page. This is a restriction on modern browsers.
-  </p>
-  <p>
-    You will see an error like below in the devtool:<br>
-    <code>NotAllowedError: play() failed because the user didn't interact with the document first.</code>
-  </p>
-  <p>
-    This error shouldn't happen if you use the built-in browser source in OBS.
-  </p>
+    <h2>Sound Playback Error in External Browsers</h2>
+    <p>
+      When you use this timer in browsers like Chrome or Firefox, the timer sound won't play automatically until you
+      click somewhere on the page. This is a restriction on modern browsers.
+    </p>
+    <p>
+      You will see an error like below in the devtool:<br>
+      <code>NotAllowedError: play() failed because the user didn't interact with the document first.</code>
+    </p>
+    <p>
+      This error shouldn't happen if you use the built-in browser source in OBS.
+    </p>
 
+    <hr>
     <p>
       <a href="../">Go back to timer</a>
     </p>
+
     <p>
-      <a href="https://github.com/bluemoonstone/obs-timer" target="_blank" rel="noopener noreferrer">GitHub💻</a> <a href="https://buymeacoffee.com/bluemoonstone" target="_blank" rel="noopener">Buy me a coffee☕</a>
+      <a href="https://github.com/bluemoonstone/obs-timer" target="_blank" rel="noopener noreferrer">GitHub💻</a> <a
+        href="https://buymeacoffee.com/bluemoonstone" target="_blank" rel="noopener">Buy me a coffee☕</a>
     </p>
   </div>
 
@@ -215,4 +226,5 @@
   <audio id="shop-door-bell-3" src="../sounds/shop-door-bell-6405-3.mp3" preload="none"></audio>
   <audio id="soft-chime" src="../sounds/soft-chime.mp3" preload="none"></audio>
 </body>
+
 </html>
