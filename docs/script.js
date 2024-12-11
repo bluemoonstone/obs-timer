@@ -56,6 +56,8 @@ const tenMinsPassedTime = (totalTimeMin - 10) * 60;
 let endTime;
 let timerInterval;
 
+const isBreakSession = voice === 2;
+
 const timerDisplay = document.getElementById('timer');
 const progressBar = document.getElementById('progress-bar');
 const progressContainer = document.getElementById('progress-container');
@@ -131,7 +133,7 @@ if (endSound && loopEndSound) {
 }
 
 function getVoices() {
-  if (voice) {
+  if (voice && !isBreakSession) {
     return {
       letsBegin: new Audio('sounds/lets-begin.mp3'),
       tenMinsPassed: new Audio('sounds/10-minutes-passed.mp3'),
@@ -139,6 +141,12 @@ function getVoices() {
       fiveMins: new Audio('sounds/5-minutes-left.mp3'),
       oneMin: new Audio('sounds/1-minute-left.mp3'),
       timesUp: new Audio('sounds/times-up.mp3')
+    };
+  } else if (voice && isBreakSession) {
+    return {
+      letsBegin: new Audio('sounds/take-a-moment.mp3'),
+      oneMin: new Audio('sounds/1-minute-left-break.mp3'),
+      timesUp: new Audio('sounds/times-up-break.mp3')
     };
   } else {
     return {};
@@ -231,13 +239,13 @@ function updateTimer() {
   prepareSoundDevice(() => {
     if (voice) {
       // Read aloud messages at certain times
-      if (timeLeft === Math.floor(halfTime)) {
+      if (!isBreakSession && timeLeft === Math.floor(halfTime)) {
         playVoice(voices.halfWay, preChime);
-      } else if (totalTime > 20 * 60 && timeLeft === tenMinsPassedTime) {
+      } else if (!isBreakSession && totalTime >= 20 * 60 && timeLeft === tenMinsPassedTime) {
         playVoice(voices.tenMinsPassed, preChime);
-      } else if (totalTime > 10 * 60 && timeLeft === 5 * 60) {
+      } else if (!isBreakSession && totalTime >= 10 * 60 && timeLeft === 5 * 60) {
         playVoice(voices.fiveMins, preChime);
-      } else if (totalTime > 2 * 60 && timeLeft === 1 * 60) {
+      } else if (totalTime >= 2 * 60 && timeLeft === 1 * 60) {
         playVoice(voices.oneMin, preChime);
       }
     }
