@@ -52,7 +52,7 @@ const {
 
 const totalTime = totalTimeMin * 60;
 const halfTime = totalTime / 2;
-const tenMinsPassedTime = (totalTimeMin - 10) * 60;
+const fiveMinsPassedTime = (totalTimeMin - 5) * 60;
 let endTime;
 let timerInterval;
 
@@ -136,7 +136,7 @@ function getVoices() {
   if (voice && !isBreakSession) {
     return {
       letsBegin: new Audio('sounds/lets-begin.mp3'),
-      tenMinsPassed: new Audio('sounds/10-minutes-passed.mp3'),
+      fiveMinsPassed: new Audio('sounds/5-minutes-passed.mp3'),
       halfWay: new Audio('sounds/half-way.mp3'),
       fiveMins: new Audio('sounds/5-minutes-left.mp3'),
       oneMin: new Audio('sounds/1-minute-left.mp3'),
@@ -241,8 +241,8 @@ function updateTimer() {
       // Read aloud messages at certain times
       if (!isBreakSession && timeLeft === Math.floor(halfTime)) {
         playVoice(voices.halfWay, preChime);
-      } else if (!isBreakSession && totalTime >= 20 * 60 && timeLeft === tenMinsPassedTime) {
-        playVoice(voices.tenMinsPassed, preChime);
+      } else if (!isBreakSession && totalTime >= 20 * 60 && timeLeft === fiveMinsPassedTime) {
+        playVoice(voices.fiveMinsPassed, preChime);
       } else if (!isBreakSession && totalTime >= 10 * 60 && timeLeft === 5 * 60) {
         playVoice(voices.fiveMins, preChime);
       } else if (totalTime >= 2 * 60 && timeLeft === 1 * 60) {
